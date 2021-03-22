@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.lifecycleScope
 import com.example.unittestingtutorial.R
 import com.example.unittestingtutorial.databinding.ActivityMainBinding
 import com.example.unittestingtutorial.util.EmailValidator
@@ -26,9 +27,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnCheckemail.setOnClickListener {
-            if (EmailValidator().isValid(binding.inputEmail.text.toString()))
+            if (EmailValidator().isValid(binding.inputEmail.text.toString())) {
                 Snackbar.make(binding.root, "Email is valid.", Snackbar.LENGTH_SHORT).show()
+                lifecycleScope.launch {
+                    writeToDatastore(binding.inputEmail.text.toString())
+                }
+            }
             else binding.inputEmail.error = "Email is not valid."
+        }
+        binding.btnGetemail.setOnClickListener {
+            lifecycleScope.launch {
+                if (getFromDatastore() == null) Snackbar.make(binding.root, "There is no valid email to retrieve.", Snackbar.LENGTH_SHORT).show()
+                else binding.textEmail.text = getFromDatastore()
+            }
         }
     }
     private suspend fun writeToDatastore(email: String) {
@@ -37,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             it[key] = email
         }
     }
-    private suspend fun getFromDatastore(email: String): String? {
+    private suspend fun getFromDatastore(): String? {
         val key = stringPreferencesKey("LastEmail")
         return datastore.data.first()[key]
     }
