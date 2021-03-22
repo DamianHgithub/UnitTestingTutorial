@@ -4,13 +4,14 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.unittestingtutorial.data.EmailModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MainDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertEmail(email: String)
+    suspend fun insertEmail(email: EmailModel)
 
     @Query("SELECT * FROM emails")
-    fun getEmails(): Flow<List<String>>
+    fun getEmails(): Flow<List<EmailModel>>
 }
