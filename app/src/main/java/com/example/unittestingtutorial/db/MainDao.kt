@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MainDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertEmail(email: EmailModel)
+    fun insertEmail(email: List<EmailModel>)
 
     @Query("SELECT * FROM emails")
     fun getEmails(): Flow<List<EmailModel>>

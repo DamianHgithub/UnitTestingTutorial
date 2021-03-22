@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 class MainRepository(
     val dao: MainDao
 ) {
-    suspend fun insertData(email: EmailModel) = dao.insertEmail(email)
+    suspend fun insertData(email: EmailModel) = dao.insertEmail(listOf(email))
     fun getData(): Flow<List<EmailModel>> = dao.getEmails()
 }
