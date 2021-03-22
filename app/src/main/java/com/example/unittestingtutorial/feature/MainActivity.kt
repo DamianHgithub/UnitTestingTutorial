@@ -1,31 +1,29 @@
 package com.example.unittestingtutorial.feature
 
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
+import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
-import com.example.unittestingtutorial.R
 import com.example.unittestingtutorial.databinding.ActivityMainBinding
 import com.example.unittestingtutorial.util.EmailValidator
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import org.koin.android.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity: AppCompatActivity() {
+    private val viewmodel by viewModel<MainViewmodel>()
     lateinit var binding: ActivityMainBinding
-    val datastore: DataStore<Preferences> by preferencesDataStore("EmailDatastore")
+    val datastore by preferencesDataStore("EmailDatastore")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        setupListeners()
+    }
+    private fun setupListeners() {
         binding.btnCheckemail.setOnClickListener {
             if (EmailValidator().isValid(binding.inputEmail.text.toString())) {
                 Snackbar.make(binding.root, "Email is valid.", Snackbar.LENGTH_SHORT).show()

@@ -1,5 +1,4 @@
 package com.example.unittestingtutorial.feature
 
-class MainRepository {
-
+class MainRepository() {
 }
