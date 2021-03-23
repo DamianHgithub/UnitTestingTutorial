@@ -19,7 +19,7 @@ import org.koin.test.KoinTest
 import org.koin.test.inject
 
 @RunWith(JUnit4::class)
-class MainViewmodelTest: KoinTest {
+class MainDatabaseTest: KoinTest {
     private val database by inject<MainDatabase>(named("testdb"))
     private val dao by inject<MainDao>(named("testdao"))
     @Before
